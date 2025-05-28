@@ -6,13 +6,13 @@
 Summary:	Python interface to GMP/MPIR, MPFR and MPC libraries
 Summary(pl.UTF-8):	Interfejs do bibliotek GMP/MPIR, MPFR oraz MPC
 Name:		python3-gmpy2
-Version:	2.2.0
+Version:	2.2.1
 Release:	1
 License:	LGPL v3+
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/gmpy2/
 Source0:	https://files.pythonhosted.org/packages/source/g/gmpy2/gmpy2-%{version}.tar.gz
-# Source0-md5:	e5c732466cc422b929dfde92375bc4cc
+# Source0-md5:	38961d26ff09cc70ff3cf07fcc892831
 URL:		https://pypi.org/project/gmpy2/
 BuildRequires:	gmp-devel
 BuildRequires:	libmpc-devel >= 1.0.3
