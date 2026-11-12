@@ -1,32 +1,40 @@
 #
 # Conditional build:
 %bcond_without	doc	# API documentation
-%bcond_with	tests	# unit tests (many inf or nan sign differences)
+%bcond_without	tests	# unit tests
 
 Summary:	Python interface to GMP/MPIR, MPFR and MPC libraries
 Summary(pl.UTF-8):	Interfejs do bibliotek GMP/MPIR, MPFR oraz MPC
 Name:		python3-gmpy2
-Version:	2.2.1
+Version:	2.3.2
 Release:	1
 License:	LGPL v3+
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/gmpy2/
 Source0:	https://files.pythonhosted.org/packages/source/g/gmpy2/gmpy2-%{version}.tar.gz
-# Source0-md5:	38961d26ff09cc70ff3cf07fcc892831
+# Source0-md5:	af91973e3343e8ad84ace5e87f0e3c7f
 URL:		https://pypi.org/project/gmpy2/
 BuildRequires:	gmp-devel
 BuildRequires:	libmpc-devel >= 1.0.3
 BuildRequires:	mpfr-devel
-BuildRequires:	python3-devel >= 1:3.5
-BuildRequires:	python3-setuptools
+BuildRequires:	python3-devel >= 1:3.9
+BuildRequires:	python3-setuptools >= 1:77
+BuildRequires:	python3-setuptools_scm >= 6.0
+%if %{with tests}
+BuildRequires:	python3-hypothesis
+BuildRequires:	python3-mpmath
+BuildRequires:	python3-pytest
+%endif
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
 %if %{with doc}
-BuildRequires:	sphinx-pdg-3
+BuildRequires:	python3-packaging
+BuildRequires:	python3-sphinx_rtd_theme >= 1
+BuildRequires:	sphinx-pdg-3 >= 4
 %endif
 Requires:	libmpc >= 1.0.3
-Requires:	python3-modules >= 1:3.7
+Requires:	python3-modules >= 1:3.9
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -66,7 +74,7 @@ Dokumentacja API modułu Pythona gmpy2.
 # use explicit plugins list for reliable builds (delete PYTEST_PLUGINS if empty)
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 PYTEST_PLUGINS= \
-%{__python3} -m pytest tests
+%{__python3} -m pytest -o pythonpath="$(echo $PWD/build-3/*lib*)" test
 %endif
 
 %if %{with doc}
@@ -90,7 +98,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{py3_sitedir}/gmpy2/gmpy2.cpython-*.so
 %{py3_sitedir}/gmpy2/__init__.py
 %{py3_sitedir}/gmpy2/*.pxd
-%{py3_sitedir}/gmpy2/gmpy2.h
+%{py3_sitedir}/gmpy2/*.h
 %{py3_sitedir}/gmpy2/__pycache__
 %{py3_sitedir}/gmpy2-%{version}-py*.egg-info
 
